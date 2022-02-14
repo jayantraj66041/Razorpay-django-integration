@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+{% for product in products %}
+<div class="col-lg-4">
+    <div class="card">
+        <div class="card-body">
+            <h2>{{product.name}}</h2>
+            <p>{{product.desc}}</p>
+            <h4>{{product.price|intcomma}}/-</h4>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'details' product.id %}" class="btn btn-success">View Details</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

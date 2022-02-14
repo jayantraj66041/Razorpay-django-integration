@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="col-lg-4">
+    <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80" class="w-100" alt="">
+</div>
+<div class="col-lg-8">
+    <h1>{{product.name}}</h1>
+    <p>{{product.desc}}</p>
+    <h3>{{product.price|intcomma}}/-</h3>
+    <button type="button" id="buynow" class="btn btn-lg btn-success">Buy Now</button>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_KpzhgHXaXQOXqq", // Enter the Key ID generated from the Dashboard
+        "amount": {{product.price}}*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "My E-Commerce website",
+        "description": "Thank you for visiting here.",
+        "image": "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwcGhvbmV8ZW58MHx8MHx8&w=1000&q=80",
+        // "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            alert(response.razorpay_payment_id);
+        },
+        "prefill": {
+            "name": "User",
+            "email": "007jayantraj@gmail.com",
+            "contact": "6200500903"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    document.getElementById('buynow').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
+{% endblock javascript %}
